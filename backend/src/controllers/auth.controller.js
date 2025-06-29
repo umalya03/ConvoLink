@@ -27,7 +27,7 @@ export async function signup(req,res) {
         }
 
         const idx = Math.floor(Math.random() * 100) + 1; //generate a number between 1 - 100 
-        const randomAvatar = `https://robohash.org/${idx}?set=set2`;
+        const randomAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${idx}`;
 
         const newUser = await User.create({
             email,

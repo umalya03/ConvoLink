@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { EarthIcon } from "lucide-react";
 import {Link} from "react-router";
-import {useMutation , useQueryClient} from "@tanstack/react-query";
-import { signup } from '../lib/api.js';
+import useSignup from '../hooks/useSignup';
+
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
     fullName: "",
@@ -10,12 +10,14 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
-  const {mutate: signupMutation, isPending, error} = useMutation({
-    mutationFn: signup,
-    onSuccess:() => queryClient.invalidateQueries({queryKey: ["authUser"] }),
-  });
+  //const {mutate: signupMutation, isPending, error} = useMutation({
+  //  mutationFn: signup,
+  //  onSuccess:() => queryClient.invalidateQueries({queryKey: ["authUser"] }),
+  //});
+
+  const {isPending,error,signupMutation}= useSignup();
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -146,7 +148,7 @@ const SignUpPage = () => {
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
-              <img src="/i.png" alt="Language connection illustration" className="w-full h-full" />
+              <img src="/i4.png" alt="Language connection illustration" className="w-full h-full" />
             </div>
 
             <div className="text-center space-y-3 mt-6">
