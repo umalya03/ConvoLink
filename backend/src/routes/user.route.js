@@ -10,7 +10,7 @@ router.use(protectRoute);
 router.get("/", getRecommendedUsers);
 router.get("/friends", getMyFriends);
 
-router.post("/friend-reques/:id", sendFriendRequest);
+router.post("/friend-request/:id", sendFriendRequest);
 router.put("/friend-reques/:id/accept", acceptFriendRequest);
 
 router.get("/friend-requests", getFriendRequests);
