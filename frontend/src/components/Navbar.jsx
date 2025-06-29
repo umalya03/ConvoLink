@@ -1,22 +1,44 @@
 import React from 'react'
 import useAuthUser from '../hooks/useAuthUser.js'
 import { Link, useLocation } from 'react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { logout } from "../lib/api.js"
 import { BellIcon, EarthIcon, LogOutIcon } from 'lucide-react';
 import ThemeSelector from "./ThemeSelector.jsx";
+import useLogout from '../hooks/useLogout.js';
+import { toast } from 'react-hot-toast';
+
 
 const Navbar = () => {
     const { authUser } = useAuthUser();
     const location = useLocation();
     const isChatPage = location.pathname?.startsWith("/chat");
 
-    const queryClient = useQueryClient();
+    const {logoutMutation} =useLogout();
 
-    const { mutate: logoutMutation } = useMutation({
-        mutationFn: logout,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] })
-    })
+    const handleLogoutClick = () => {
+        toast((t) => (
+          <span className="flex flex-col gap-2">
+            <span>Are you sure you want to logout?</span>
+            <div className="flex gap-2 justify-end">
+              <button
+                className="btn btn-sm btn-error"
+                onClick={() => {
+                  logoutMutation();
+                  toast.dismiss(t.id);
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="btn btn-sm"
+                onClick={() => toast.dismiss(t.id)}
+              >
+                Cancel
+              </button>
+            </div>
+          </span>
+        ));
+      };
+      
 
     return (
         <nav className="bg-base-200 border-b border-base-300 sticky top-0 z-30 h-16 flex items-center">
@@ -51,7 +73,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Logout button */}
-                    <button className="btn btn-ghost btn-circle" onClick={logoutMutation}>
+                    <button className="btn btn-ghost btn-circle" onClick={handleLogoutClick}>
                         <LogOutIcon className="h-6 w-6 text-base-content opacity-70" />
                     </button>
                 </div>
