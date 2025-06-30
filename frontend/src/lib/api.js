@@ -1,3 +1,4 @@
+import axios from "axios";
 import { axiosInstance } from "./axios.js"
 
 export const signup = async (signupData) => {
@@ -56,5 +57,10 @@ export async function getUserFriends() {
   
   export async function acceptFriendRequest(requestId) {
     const response = await axiosInstance.put(`/users/friend-request/${requestId}/accept`);
+    return response.data;
+  }
+
+  export async function getStreamToken() {
+    const response = await axiosInstance.get("/chat/token");
     return response.data;
   }
