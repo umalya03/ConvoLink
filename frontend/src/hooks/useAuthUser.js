@@ -1,14 +1,24 @@
-import {useQuery} from "@tanstack/react-query";
-import { getAuthUser } from '../lib/api.js';
+import { useQuery } from '@tanstack/react-query';
+import { getAuthUser } from '../lib/api';
+import { useThemeStore } from '../store/useThemeStore';
+import { useEffect } from 'react';
 
 const useAuthUser = () => {
-    const authUser = useQuery({
-        queryKey:["authUser"],
-        queryFn: getAuthUser,
-        retry: false, //auth check
-      });
+  const { setTheme } = useThemeStore();
 
-      return {isLoading: authUser.isLoading , authUser: authUser.data?.user};
+  const authUserQuery = useQuery({
+    queryKey: ['authUser'],
+    queryFn: getAuthUser,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (authUserQuery.data?.user?.theme) {
+      setTheme(authUserQuery.data.user.theme); // Set theme from user profile
+    }
+  }, [authUserQuery.data, setTheme]);
+
+  return { isLoading: authUserQuery.isLoading, authUser: authUserQuery.data?.user };
 };
 
-export default useAuthUser
+export default useAuthUser;

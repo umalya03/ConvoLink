@@ -64,3 +64,8 @@ export async function getUserFriends() {
     const response = await axiosInstance.get("/chat/token");
     return response.data;
   }
+
+  export async function updateUserTheme(theme) {
+    const response = await axiosInstance.put('/users/theme', { theme });
+    return response.data;
+  }

@@ -46,7 +46,8 @@ const userSchema = new mongoose.Schema({
            type: mongoose.Schema.Types.ObjectId,
            ref: "User"
         }
-    ]
+    ],
+    theme: { type: String, default: 'autumn' },
 } , {timestamps:true});
 
 //pre hook to hash user's password
