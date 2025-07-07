@@ -154,3 +154,39 @@ export async function onboard(req,res) {
         res.status(500).json({message: "Internal Server Error" });
     }
 }
+
+export async function profile(req,res) {
+    try {
+        const userId = req.user._id
+
+        const {fullName, bio, nativeLanguage, learningLanguage, location} = req.body
+
+        if(!fullName || !bio || !nativeLanguage || !learningLanguage || !location){
+            return res.status(400).json({
+                message: "All fields are required",
+                missingFields: [
+                    !fullName && "fullName",
+                    !bio && "bio",
+                    !nativeLanguage && "nativeLanguage",
+                    !learningLanguage && "learningLanguage",
+                    !location && "location"
+                ].filter(Boolean),
+            })
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId , {
+            ...req.body,
+            isOnboarded: true,
+        }, {new:true})
+
+        if(!updatedUser){
+            return res.status(404).json({message:"User not found"})
+        }
+
+        res.status(200).json({ success:true, user: updatedUser});
+
+    } catch (error) {
+        console.error("Updating error: ",error);
+        res.status(500).json({message: "Internal Server Error" });
+    }
+}

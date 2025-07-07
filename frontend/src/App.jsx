@@ -14,12 +14,13 @@ import useAuthUser from './hooks/useAuthUser.js';
 import Layout from './components/Layout.jsx'
 import { useState } from 'react';
 import { useThemeStore } from './store/useThemeStore.js';
+import ProfilePage from './pages/ProfilePage.jsx';
 
 
 const App = () => {
 
   const { isLoading, authUser } = useAuthUser();
-  const {theme} = useThemeStore();
+  const { theme } = useThemeStore();
 
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded
@@ -37,11 +38,11 @@ const App = () => {
           <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
         )}
         />
-        <Route path="/signup" element={!isAuthenticated ? <SignUpPage /> : <Navigate to={ isOnboarded ? "/" : "/onboarding"} />} />
-        <Route path="/login" 
+        <Route path="/signup" element={!isAuthenticated ? <SignUpPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />} />
+        <Route path="/login"
           element={
-            !isAuthenticated ? <LoginPage /> : <Navigate to={ isOnboarded ? "/" : "/onboarding"} />
-          } 
+            !isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
         />
         <Route
           path="/notifications"
@@ -53,13 +54,13 @@ const App = () => {
             <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
           )}
         />
-        <Route path="/call/:id" element={isAuthenticated && isOnboarded ? ( 
-        <CallPage /> 
+        <Route path="/call/:id" element={isAuthenticated && isOnboarded ? (
+          <CallPage />
         ) : (
-        <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+          <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
         )
-      } />
-        
+        } />
+
         <Route path="/chat/:id" element={isAuthenticated && isOnboarded ? (
           <Layout showSidebar={false}>
             <ChatPage />
@@ -92,6 +93,17 @@ const App = () => {
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
           }
+        />
+
+        <Route
+          path="/profile"
+          element={isAuthenticated && isOnboarded ? (
+            <Layout showSidebar={true}>
+              <ProfilePage />
+            </Layout>
+          ) : (
+            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+          )}
         />
 
       </Routes>
